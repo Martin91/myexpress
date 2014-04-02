@@ -8,9 +8,9 @@ module.exports = function() {
     response.end();
   };
 
-  myexpress.listen = function(port) {
+  myexpress.listen = function(port, callback) {
     var server = http.createServer(this);
-    server.listen(port);
+    server.listen(port, callback);
 
     return server;
   }
