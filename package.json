@@ -1,0 +1,19 @@
+{
+  "name": "myexpress",
+  "version": "0.0.0",
+  "description": "a simple server",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "server"
+  ],
+  "author": "Martin",
+  "license": "MIT",
+  "devDependencies": {
+    "supertest": "^0.10.0",
+    "mocha": "^1.18.2",
+    "chai": "^1.9.1"
+  }
+}
