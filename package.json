@@ -9,6 +9,9 @@
   "keywords": [
     "server"
   ],
+  "bin": {
+    "myexpress": "./bin/myexpress.js"
+  },
   "author": "Martin",
   "license": "MIT",
   "devDependencies": {
