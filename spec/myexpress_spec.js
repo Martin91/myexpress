@@ -30,4 +30,17 @@ describe('app', function(){
       request('http://localhost:'+port).get('/something-not-found').expect(404, done);
     });
   });
+
+  describe('Implement .use', function() {
+    it("should be able to add a new stack to the app", function(){
+      function stack1() {};
+      function stack2() {};
+      app.use(stack1);
+      app.use(stack2);
+
+      expect(app.stack.length).to.eql(2);
+      expect(app.stack[0]).to.eql(stack1);
+      expect(app.stack[1]).to.eql(stack2);
+    });
+  });
 });
