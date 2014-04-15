@@ -44,3 +44,22 @@ describe('app', function(){
     });
   });
 });
+
+describe('calling middleware stack', function() {
+  var app, port = 4000;
+  beforeEach(function() {
+    app = new express();
+  });
+
+  it('should call single middleware', function(done){
+    var middleware = function(req, res, next) {
+      res.end('Hello, Node!');
+    };
+
+    app.use(middleware);
+
+    app.listen(port, done);
+
+    request('http://localhost:' + port).get('/').expect('Hello, Node!', done);
+  });
+});
