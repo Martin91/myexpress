@@ -8,12 +8,20 @@ module.exports = function() {
     response.end();
   };
 
+  myexpress.stack = [];
+
   myexpress.listen = function(port, callback) {
     var server = http.createServer(this);
     server.listen(port, callback);
 
     return server;
-  }
+  };
+
+  myexpress.use = function(middleware) {
+    if(middleware && (typeof middleware) === 'function') {
+      myexpress.stack.push(middleware);
+    }
+  };
 
   return myexpress;
 };
