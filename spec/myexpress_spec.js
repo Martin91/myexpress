@@ -58,7 +58,22 @@ describe('calling middleware stack', function() {
 
     app.use(middleware);
 
-    app.listen(port, function(){
+    app.listen(3000, function(){
+      request('http://localhost:3000').get('/').expect('Hello, Node!', done);
+    });
+  });
+
+  it('should call multiple middlewares', function(done){
+    var middleware1 = function(req, res, next) {
+      next();
+    };
+    var middleware2 = function(req, res, next) {
+      res.end('Hello, Node!');
+    }
+
+    app.use(middleware1);
+    app.use(middleware2);
+    app.listen(port, function() {
       request('http://localhost:' + port).get('/').expect('Hello, Node!', done);
     });
   });
