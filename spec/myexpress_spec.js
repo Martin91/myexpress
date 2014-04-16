@@ -58,9 +58,7 @@ describe('calling middleware stack', function() {
 
     app.use(middleware);
 
-    app.listen(3000, function(){
-      request('http://localhost:3000').get('/').expect('Hello, Node!', done);
-    });
+    request(app).get('/').expect('Hello, Node!', done);
   });
 
   it('should call multiple middlewares', function(done){
@@ -73,9 +71,8 @@ describe('calling middleware stack', function() {
 
     app.use(middleware1);
     app.use(middleware2);
-    app.listen(port, function() {
-      request('http://localhost:' + port).get('/').expect('Hello, Node!', done);
-    });
+
+    request(app).get('/').expect('Hello, Node!', done);
   });
 
   it('should be 404 at the end of middleware chain', function(done) {
@@ -88,14 +85,11 @@ describe('calling middleware stack', function() {
 
     app.use(middleware1);
     app.use(middleware2);
-    app.listen(5000, function() {
-      request('http://localhost:5000').get('/').expect(404, done);
-    });
+
+    request(app).get('/').expect(404, done);
   });
 
   it('should be 404 if no any middleware', function(done){
-    app.listen(8888, function() {
-      request('http://localhost:8888').get('/').expect(404, done);
-    })
+    request(app).get('/').expect(404, done);
   });
 });
