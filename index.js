@@ -12,6 +12,11 @@ module.exports = function() {
 
     if(myexpress.stack.length > 0) {
       var next = function() {
+        if(arguments.length > 0 && arguments[0] instanceof Error) {
+          response.statusCode = 500;
+          response.end("Internal Server Error!");
+        }
+
         if((currentMiddlewareIndex + 1) === myexpress.stack.length) {
           myexpress.stack[currentMiddlewareIndex](request, response, defaultMiddleware);
         } else {
