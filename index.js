@@ -6,6 +6,7 @@ module.exports = function() {
   var myexpress = function(request, response) {
     var currentMiddlewareIndex = -1,
         defaultMiddleware = function() {
+          response.statusCode = 404;
           response.end('404 - Not Found');
         };
 

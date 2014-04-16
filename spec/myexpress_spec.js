@@ -77,4 +77,19 @@ describe('calling middleware stack', function() {
       request('http://localhost:' + port).get('/').expect('Hello, Node!', done);
     });
   });
+
+  it('should be 404 at the end of middleware chain', function(done) {
+    var middleware1 = function(req, res, next) {
+      next();
+    };
+    var middleware2 = function(req, res, next) {
+      next();
+    }
+
+    app.use(middleware1);
+    app.use(middleware2);
+    app.listen(5000, function() {
+      request('http://localhost:5000').get('/').expect(404, done);
+    });
+  });
 });
