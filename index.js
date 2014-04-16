@@ -4,18 +4,20 @@ module.exports = function() {
   // Act as requestListener, a function which is automatically
   // added to the 'request' event. http://nodejs.org/api/http.html#http_event_request
   var myexpress = function(request, response) {
-    var currentMiddleware = 0,
+    var currentMiddlewareIndex = -1,
         defaultMiddleware = function() {
           response.end('404 - Not Found');
         };
 
-    if(myexpress.stack.length > 0) {
-      if(currentMiddleware < myexpress.stack.length) {
-        myexpress.stack[currentMiddleware](request, response, myexpress.stack[++currentMiddleware]);
+    var next = function() {
+      if((currentMiddlewareIndex + 1) === myexpress.stack.length) {
+        myexpress.stack[currentMiddlewareIndex](request, response, defaultMiddleware);
       } else {
-        myexpress.stack[currentMiddleware](request, response, defaultMiddleware);
+        myexpress.stack[++currentMiddlewareIndex](request, response, next);
       }
-    }
+    };
+
+    next();
   };
 
   myexpress.stack = [];
