@@ -13,6 +13,13 @@ module.exports = function() {
     if(myexpress.stack.length > 0) {
       var next = function() {
         if(arguments.length > 0 && arguments[0] instanceof Error) {
+          for(; currentMiddlewareIndex < myexpress.stack.length;) {
+            if(myexpress.stack[++currentMiddlewareIndex].length === 4) {
+              myexpress.stack[currentMiddlewareIndex](arguments[0], request, response, next);
+              break;
+            }
+          }
+
           response.statusCode = 500;
           response.end("Internal Server Error!");
         }
@@ -21,8 +28,11 @@ module.exports = function() {
           if((currentMiddlewareIndex + 1) === myexpress.stack.length) {
             myexpress.stack[currentMiddlewareIndex](request, response, defaultMiddleware);
           } else {
-            while(myexpress.stack[++currentMiddlewareIndex].length == 3) {
-              myexpress.stack[currentMiddlewareIndex](request, response, next);
+            for(; currentMiddlewareIndex < myexpress.stack.length;) {
+              if(myexpress.stack[++currentMiddlewareIndex].length === 3) {
+                myexpress.stack[currentMiddlewareIndex](request, response, next);
+                break;
+              }
             }
           }
         } catch(err) {

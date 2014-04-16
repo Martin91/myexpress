@@ -136,4 +136,24 @@ describe('error handling', function(){
 
     request(app).get('/').expect('m2', done);
   });
+
+  it('should skip normal middlewares if next is called with an error', function(done) {
+    var m1 = function(req,res,next) {
+      next(new Error("boom!"));
+    }
+
+    var m2 = function(req,res,next) {
+      // timeout
+    }
+
+    var e1 = function(err,req,res,next) {
+      res.end("e1");
+    }
+
+    app.use(m1);
+    app.use(m2); // should skip this. will timeout if called.
+    app.use(e1);
+
+    request(app).get('/').expect('e1', done);
+  });
 });
