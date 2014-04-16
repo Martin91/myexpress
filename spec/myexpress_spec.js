@@ -58,8 +58,8 @@ describe('calling middleware stack', function() {
 
     app.use(middleware);
 
-    app.listen(port, done);
-
-    request('http://localhost:' + port).get('/').expect('Hello, Node!', done);
+    app.listen(port, function(){
+      request('http://localhost:' + port).get('/').expect('Hello, Node!', done);
+    });
   });
 });
