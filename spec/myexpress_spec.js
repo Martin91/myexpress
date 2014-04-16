@@ -157,3 +157,22 @@ describe('error handling', function(){
     request(app).get('/').expect('e1', done);
   });
 });
+
+describe('Implement App Embedding As Middleware', function(){
+  var app, subApp;
+  beforeEach(function(){
+    app = express();
+    subApp = express();
+  });
+
+  it('should pass unhandled request to parent', function(done){
+    function m2(req,res,next) {
+      res.end("m2");
+    }
+
+    app.use(subApp);
+    app.use(m2);
+
+    request(app).get('/').expect('m2', done);
+  });
+});
