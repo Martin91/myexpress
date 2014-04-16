@@ -21,7 +21,9 @@ module.exports = function() {
           if((currentMiddlewareIndex + 1) === myexpress.stack.length) {
             myexpress.stack[currentMiddlewareIndex](request, response, defaultMiddleware);
           } else {
-            myexpress.stack[++currentMiddlewareIndex](request, response, next);
+            while(myexpress.stack[++currentMiddlewareIndex].length == 3) {
+              myexpress.stack[currentMiddlewareIndex](request, response, next);
+            }
           }
         } catch(err) {
           response.statusCode = 500;
