@@ -10,13 +10,17 @@ module.exports = function() {
           response.end('404 - Not Found');
         };
 
-    var next = function() {
-      if((currentMiddlewareIndex + 1) === myexpress.stack.length) {
-        myexpress.stack[currentMiddlewareIndex](request, response, defaultMiddleware);
-      } else {
-        myexpress.stack[++currentMiddlewareIndex](request, response, next);
-      }
-    };
+    if(myexpress.stack.length > 0) {
+      var next = function() {
+        if((currentMiddlewareIndex + 1) === myexpress.stack.length) {
+          myexpress.stack[currentMiddlewareIndex](request, response, defaultMiddleware);
+        } else {
+          myexpress.stack[++currentMiddlewareIndex](request, response, next);
+        }
+      };
+    } else {
+      var next = defaultMiddleware;
+    }
 
     next();
   };
