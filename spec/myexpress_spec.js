@@ -108,4 +108,13 @@ describe('error handling', function(){
 
     request(app).get('/').expect(500, done);
   });
+
+  it('should return 500 for uncaught error', function(done){
+    var m1 = function(req,res,next) {
+      throw new Error("boom!");
+    };
+    app.use(m1)
+
+    request(app).get('/').expect(500, done);
+  });
 });

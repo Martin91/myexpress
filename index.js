@@ -17,10 +17,15 @@ module.exports = function() {
           response.end("Internal Server Error!");
         }
 
-        if((currentMiddlewareIndex + 1) === myexpress.stack.length) {
-          myexpress.stack[currentMiddlewareIndex](request, response, defaultMiddleware);
-        } else {
-          myexpress.stack[++currentMiddlewareIndex](request, response, next);
+        try {
+          if((currentMiddlewareIndex + 1) === myexpress.stack.length) {
+            myexpress.stack[currentMiddlewareIndex](request, response, defaultMiddleware);
+          } else {
+            myexpress.stack[++currentMiddlewareIndex](request, response, next);
+          }
+        } catch(err) {
+          response.statusCode = 500;
+          response.end("Internal Server Error!");
         }
       };
     } else {
